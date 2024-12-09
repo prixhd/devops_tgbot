@@ -4,11 +4,15 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: lecbotdb
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5438:5432"
+    volumes:
+      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./pgpass:/var/lib/postgresql/.pgpass
+      - ./config-postgresql:/var/lib/postgresql/data/postgresql.conf
 
   bot:
     build:
@@ -17,9 +21,9 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://postgres:root@db/lecbotdb
-      API_TOKEN: '7963913206:AAGTFcmWKqtSlExtvq0EjxH2nojN0ts3IyY'
-      SSH_HOST: '176.124.211.185'
-      SSH_PORT: '22'
-      SSH_USER: 'root'
-      SSH_PASS: 'dd.qRRje6ecS8-'
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@db/${DB_NAME}
+      API_TOKEN: ${API_TOKEN}
+      SSH_HOST: ${SSH_HOST}
+      SSH_PORT: ${SSH_PORT}
+      SSH_USER: ${SSH_USER}
+      SSH_PASS: ${SSH_PASS}
