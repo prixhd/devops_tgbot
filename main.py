@@ -15,27 +15,37 @@ from aiogram.client.default import DefaultBotProperties
 
 from aiogram.filters import Command
 
-API_TOKEN = '7963913206:AAGTFcmWKqtSlExtvq0EjxH2nojN0ts3IyY'
+import os
+from dotenv import load_dotenv
+
+API_TOKEN = os.getenv("API_TOKEN")
 
 EMAIL_PATTERN = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 PHONE_PATTERN = r'(\+7|8)?\s?(\d{3}|\d{3})\s?\d{3}\s?\d{2}\s?\d{2}'
 TOKEN = "7963913206:AAGTFcmWKqtSlExtvq0EjxH2nojN0ts3IyY"
 
-SSH_HOST = '176.124.211.185'
-SSH_PORT = 22
-SSH_USER = 'root'
-SSH_PASS = 'dd.qRRje6ecS8-'
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
+
+SSH_HOST = os.getenv('SSH_HOST')
+SSH_PORT = int(os.getenv('SSH_PORT'))
+SSH_USER = os.getenv('SSH_USER')
+SSH_PASS = os.getenv('SSH_PASS')
 
 import psycopg2
 
 # Подключение к PostgreSQL
 conn = psycopg2.connect(
-    dbname="lecbotdb",
-    user="postgres",
-    password="root",
-    host="db",
-    port="5432"
+    dbname=DB_NAME,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    host=DB_HOST,
+    port=DB_PORT
 )
+
 cur = conn.cursor()
 
 storage = MemoryStorage()
